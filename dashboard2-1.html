@@ -183,8 +183,10 @@
 									list.loadData();
 
 
+									var stamp;
 									list.onData = function(data){
 										//  console.log(data);
+										stamp = data.stamp;
 										var ar = data.result.list;
 										for(var i=0,n=ar.length;i<n;i++){
 											var item = ar[i];
@@ -198,10 +200,11 @@
 										list.setData.call(list,ar);
 									}
 									setInterval(function(){
+										list.getparams = stamp
 										// console.log(list.getparams);
 										//if(list.getparams == 'report=d') list.getparams='report=w';
 										//else list.getparams = 'report=d';
-									//	list.loadData();
+										list.loadData();
 									},5000);
 
 								})
