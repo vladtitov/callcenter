@@ -10,14 +10,14 @@ var table2;
         return VOItem;
     }());
     var ListRow = (function () {
-        function ListRow(item, template) {
+        function ListRow(item) {
             this.item = item;
-            this.template = template;
             // $timeout:JQuery;
             this.current = '';
             this.timer = 0;
             this.stamp = item.stamp;
             this.id = item.id;
+            this.key = item.key;
             this.order = -1;
         }
         ListRow.prototype.initView = function () {
@@ -33,6 +33,7 @@ var table2;
             var data = this.item;
         };
         ListRow.prototype.render = function () {
+            this.$view.attr('data-i', this.i);
             var item = this.item;
             for (var str in item) {
                 if (this.values[str])
@@ -50,6 +51,7 @@ var table2;
                 $cont.append(this.$view);
             this.render();
             this.$view.fadeIn();
+            this.mounted = true;
         };
         ListRow.prototype.appendTo = function ($cont) {
             if (!this.$view)
@@ -57,6 +59,7 @@ var table2;
             $cont.append(this.$view);
             this.render();
             this.$view.fadeIn();
+            this.mounted = true;
         };
         ListRow.prototype.setOrder = function ($cont, i) {
             this.order = i;
@@ -67,19 +70,25 @@ var table2;
             this.item = item;
             return this;
         };
-        ListRow.prototype.remove = function () {
+        ListRow.prototype.remove = function (how) {
+            //  for(var str in this.values)this.values[str].destroy();
             var _this = this;
-            for (var str in this.values)
-                this.values[str].destroy();
-            this.$view.fadeOut(function () {
-                _this.order = -1;
-                _this.$view.remove();
-            });
+            this.mounted = false;
+            if (how) {
+                this.$view.fadeOut(function () {
+                    _this.order = -1;
+                    _this.$view.remove();
+                });
+            }
+            else
+                this.$view.remove();
         };
         ListRow.prototype.hide = function () {
+            this.visible = false;
             this.$view.fadeOut();
         };
         ListRow.prototype.show = function () {
+            this.visible = true;
             this.$view.fadeIn();
         };
         ListRow.disp = $({});

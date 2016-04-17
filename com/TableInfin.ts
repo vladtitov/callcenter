@@ -2,36 +2,40 @@
  * Created by VladHome on 3/19/2016.
  */
     ///<reference path="base.ts"/>
+    ///<reference path="Collection.ts"/>
+
 
 module table {
 
-    import ListRow = table2.ListRow;
+    //import ListRow = table2.ListRow;
     declare var Formatter:any;
     import TableRow = table2.ListRow;
     import CellValue = table.ItemValue;
 /////////////////////////////////////////////////////////////////////////////////////////////
-        //setInterval(function(){ CellValue.disp.triggerHandler('time',-1)},1000);
+      //  setInterval(function(){ CellValue.disp.triggerHandler('time',-1)},1000);
 
-  interface  VOItem{
-        key:number
-        id:number;
-       stamp:number;
-        t:number;
-        icon:string;
-        sort:number;
-        msg:string;
-    }
 
-   export class TableInfin {
+
+   export class TableInfinController {
         $view:JQuery;
         $tbody:JQuery;
         $nano:JQuery;
        ON_SCROLL_FULL:string='ON_SCROLL_FULL';
        ON_SCROLL_0:string='ON_SCROLL_0';
 
-        onData = function (data) {
-            console.log(data);
+        onData(data) {
+            this.getparams = data.stamp;
+            console.log(this.getparams)
+            var ar = data.result.list;
+            for(var i=0,n=ar.length;i<n;i++){
+                var item = ar[i];
+                item.key=item.id;
+                item.icon = 'fa fa-'+item.fa;
+                item.aux_color = (item.color=='green'?'':item.color);
+            }
+            this.setData(ar);
         }
+
         private template:string;
 
        isUp:boolean;
@@ -40,46 +44,68 @@ module table {
 
        toprow:number= 0;
        currentScroll:number=0;
-
-       scrollOneUp():void{
-           if(!this.$nanoContent) this.$nanoContent = this.$nano.find('.nano-content');
-           if(this.$nanoContent.length ===0){
-               console.log('error no nanocontent ');
-               return;
-           }
-          var len =  this.$tbody.children().length;
-
-          var h:number = this.$tbody.children(this.toprow++).height();
-           this.currentScroll+=h;
-
-            var max = this.$nanoContent[0].scrollHeight-this.$nanoContent.height();
-           console.log('this.currentScroll   '+this.currentScroll + ' max  '+max);
-            if(this.currentScroll > max) this.$disp.triggerHandler(this.ON_SCROLL_FULL);
-            else this.$nanoContent.animate({'scrollTop':this.currentScroll},500);
-        //  console.log(this.$nanoContent[0].scrollHeight-this.$nanoContent.height());
-       }
-
-       scrollFullUp():void{
-           //jQuery.fx.interval = 50;
-           if(!this.$nanoContent) this.$nanoContent = this.$nano.find('.nano-content');
-           this.$nanoContent.animate({'scrollTop':0},1000,null,()=>{
-               this.$disp.triggerHandler(this.ON_SCROLL_0);
-           });
-
-       }
+       db:DataCollection;
+       refreshWave:RefreshWave;
 
         constructor(private listid:string, private options:any) {
             for (var str in options)this[str] = options[str];
-            setInterval(()=>{this.scrollOneUp()},1000);
+            this.db = new DataCollection();
+            this.refreshWave = new RefreshWave();
 
-            this.$disp.on(this.ON_SCROLL_FULL,(evt)=>{
-                this.scrollFullUp();
+           // setInterval(()=>{this.scrollOneUp()},1000);
+           /* this.$disp.on(this.ON_SCROLL_FULL,(evt)=>{
+               // this.scrollFullUp();
             });
             this.$disp.on(this.ON_SCROLL_0,(evt)=>{
                 this.toprow = 0;
                 this.currentScroll = 0;
-            });
+            });*/
         }
+
+
+       timer:number=0;
+
+       scrollStart():void{
+           if(this.timer !==0)return
+           this.timer = setInterval(()=>this.scrollNext(),2000);
+
+       }
+       scrollstop(reason:string):void{
+           console.log('stop scroll '+reason);
+           clearInterval(this.timer);
+           this.timer = 0;
+       }
+
+       ontop:number=0;
+
+       scrollNext():void{         //  console.log('next');
+        var h = this.$tbody.children(0).height();
+
+        if(this.ontop ===0 )this.ontop = 1
+        else this.ontop = 0;
+          this.addRow();
+           this.$nanoContent.animate({'scrollTop':this.ontop?h:h*2},500,()=>{
+              // console.log('done');
+               if(this.ontop===0){
+                   var item =   this.rows.shift();
+                   item.remove(null);
+                   var item =   this.rows.shift();
+                   item.remove(null);
+                   this.$nanoContent.scrollTop(0);
+               }
+
+               this.current=-1
+               this.fillTable();
+
+
+           });
+
+
+           //console.log(item);
+
+
+       }
+
 
        init():void{
            this.$view = $(this.listid);
@@ -91,7 +117,7 @@ module table {
 
         getparams:string = '2016-03-15T7:58:34';
 
-        collection:_.Dictionary<TableRow> = {};
+       // collection:_.Dictionary<TableRow> = {};
         stamp:number;
         geturl:string = 'http://front-desk.ca/mi/callcenter/rem/getagents?date=';
 
@@ -111,132 +137,124 @@ module table {
         }
 
        rows:TableRow[];
-       private data:VOItem[];
+
        setDataDone():void{
-        // this.removeItems();
+           if(this.timer ===0)  this.scrollStart();
+          // console.log('setdatadone');
        }
 
-       currentStamp:number;
-
-
+       current:number;
        height:number;
-       lastNumber:number;
-       dataInd:any;
+       refreshExists():void{
+           var ar = this.db.getExists();
+           this.refreshWave.refresh(ar);
+          /* ar.forEach(function(item){
+             // console.log(item);
+               if(item.mounted) item.render();
 
-        setData(data:VOItem[]) {
-            var newInd  = _.indexBy(data,'key');
-            var oldInd = this.dataInd;
-            if( oldInd){
-              //  console.log(this.data.length+' new '+data.length);
-                var oldAr=[];
-                _.map(this.data,function(val){  if(!newInd[val.key])oldAr.push(val)});
-               // console.log('old',oldAr);
-                var newAr=[];
-                _.map(data,function(val){  if(!oldInd[val.key])newAr.push(val)});
-               // console.log('new',newAr);
-            }
-
-
-            this.data = data;
-            this.dataInd=newInd;
-
-
-
-            this.rows = [];
-            this.current = -1;
-            this.lastNumber = -1;
-            this.renderData();
-            if(!this.$nanoContent) this.$nanoContent = this.$nano.find('.nano-content');
-            this.height = this.$nanoContent.height();
-            //console.log('this.height '+this.height);
-        }
-
-
-       removeOld(newData):void{
-           var stamp = Date.now();
-           var old = _.sortBy(this.data,'key');
-           _.map(newData,function(val:any){ if(old[val.key]) old[val.key].stamp = stamp; });
+           })*/
        }
+
+       initContenet():void{
+           this.$nanoContent = this.$nano.find('.nano-content');
+           this.height = this.$nanoContent.height();
+           this.rows=[];
+           this.current=-1;
+           this.fillTable();
+       }
+        setData(data:VOItem[]) {
+            this.db.parseData(data);
+
+            console.log('new data '+this.db.newdata.length+' ols data '+ this.db.olddata.length+' data '+this.db.length);
+            if(!this.$nanoContent)this.initContenet();
+            this.refreshExists();
+
+        }
        setStamp(stamp:number):void{
 
 
        }
-       renderData():void{
+
+       addRow():void{
+           var row = this.db.getNext();
+           if(row.mounted){
+               console.log('mounted');
+           }else{
+               row.template = this.template;
+               row.appendTo(this.$tbody);
+               this.rows.push(row);
+           }
+
+       }
+
+       fillTable():void{
            this.current++;
-           this.lastNumber++
-           if(this.current >= this.data.length){
+           if(this.current>=this.db.length){
                this.setDataDone();
                return;
            }
-           // console.log(this);
-            var ar = this.data;
-            var coll = this.collection;
-           // for (var i = 0, n = ar.length; i < n; i++) {
-                var item = ar[this.current];
-                item.stamp = this.current;
-
-                if (coll[item.key])coll[item.key].setData(item);
-                else  {
-                    coll[item.key] = new TableRow(item, this.template);
-                    coll[item.key].appendTo(this.$tbody);
-                }
-           this.rows.push(coll[item.key]);
+           this.addRow();
 
            if(this.$tbody.height() > this.height) this.setDataDone();
-           else setTimeout(()=>{this.renderData()},20);
-           //coll[item.key].insertAt(this.$tbody, this.current) ;
-           // }
-
-
-
+           else setTimeout(()=>{this.fillTable()},20);
 
         }
+    }
 
+    export class RefreshWave{
+        data:TableRow[];
+        timer:number;
+        counter:number;
+        refresh(data:TableRow[]){
+            this.data = data;
+            this.counter=-1;
+           this.stop();
+            this.timer = setInterval(()=>{this.doNext()},60)
 
-       private removeItemsDone():void{
-           this.current = -1;
-           this.sortOrder();
-       }
-       private sortOrderDone():void{
+        }
+        stop():void{
+            clearInterval(this.timer);
+        }
+        doNext():void{
+            this.counter++;
+            if(this.counter>=this.data.length)this.stop();
+            else{
+                var item:TableRow = this.data[this.counter];
+                if(item.mounted)  item.render();
+                else this.doNext();
 
-
-       }
-       private current:number;
-       sortOrder():void{
-           this.current ++;
-           if(this.current >= this.rows.length){
-               this.sortOrderDone();
-               return;
-           }
-          // this.views;
-           var ar = this.rows;
-               var item = ar[ this.current];
-               if(item.order != this.current){
-                   item.insertAt(this.$tbody, this.current) ;
-                   setTimeout(()=>this.sortOrder(),2);
-               }
-       }
-
-       removeItems():void{
-           var ar = this.data
-           var coll = this.collection;
-           // console.log(coll);
-           for(var str in coll){
-               if(coll[str] && coll[str].stamp !== this.stamp){
-                   coll[str].remove();
-                 //this.collection[str] = null;
-               }
-           }
-
-           this.removeItemsDone();
-       }
-
+            }
+        }
     }
 
 
-////////////////////////////////////////////////////////////////////////
+
 
 
 
 
 }
+
+$(document).ready(function(){
+
+    var options ={
+        geturl:'http://callcenter.front-desk.ca/service/get-agents-all?date=',
+        getparams:'2016-03-15T7:58:34',
+        list:'[data-id=list]:first'
+
+    }
+
+    var list = new table.TableInfinController('#Table1',options);
+    list.init();
+    list.loadData();
+
+
+    setInterval(function(){
+        list.loadData();
+    },5000);
+
+    setInterval(function(){
+        //	list.scrollUp();
+    },6000)
+
+})

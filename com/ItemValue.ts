@@ -18,7 +18,7 @@ module table{
 
         constructor(public index:string, public el:HTMLElement){
             ItemValue.disp.on(index,(evt,val)=>{
-                if(val == -1) val = this.value+1;
+                if(val == -1) val =  this.value+1;
                 this.setValue(val)
             })
             this.$view = $(el);

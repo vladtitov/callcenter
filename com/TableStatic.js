@@ -109,7 +109,8 @@ var table4;
             if (coll[item.key])
                 coll[item.key].setData(item);
             else {
-                coll[item.key] = new TableRow(item, this.template);
+                coll[item.key] = new TableRow(item);
+                coll[item.key].template = this.template;
                 coll[item.key].appendTo(this.$tbody);
             }
             this.rows.push(coll[item.key]);
@@ -144,7 +145,7 @@ var table4;
             // console.log(coll);
             for (var str in coll) {
                 if (coll[str] && coll[str].stamp !== this.stamp) {
-                    coll[str].remove();
+                    coll[str].remove('slow');
                 }
             }
             this.removeItemsDone();

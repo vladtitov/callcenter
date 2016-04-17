@@ -2,70 +2,89 @@
  * Created by VladHome on 3/19/2016.
  */
 ///<reference path="base.ts"/>
+///<reference path="Collection.ts"/>
 var table;
 (function (table) {
-    var TableRow = table2.ListRow;
-    var TableInfin = (function () {
-        function TableInfin(listid, options) {
-            var _this = this;
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    //  setInterval(function(){ CellValue.disp.triggerHandler('time',-1)},1000);
+    var TableInfinController = (function () {
+        function TableInfinController(listid, options) {
             this.listid = listid;
             this.options = options;
             this.ON_SCROLL_FULL = 'ON_SCROLL_FULL';
             this.ON_SCROLL_0 = 'ON_SCROLL_0';
-            this.onData = function (data) {
-                console.log(data);
-            };
             this.$disp = $({});
             this.toprow = 0;
             this.currentScroll = 0;
+            this.timer = 0;
+            this.ontop = 0;
             this.getparams = '2016-03-15T7:58:34';
-            this.collection = {};
             this.geturl = 'http://front-desk.ca/mi/callcenter/rem/getagents?date=';
             for (var str in options)
                 this[str] = options[str];
-            setInterval(function () { _this.scrollOneUp(); }, 1000);
-            this.$disp.on(this.ON_SCROLL_FULL, function (evt) {
-                _this.scrollFullUp();
-            });
-            this.$disp.on(this.ON_SCROLL_0, function (evt) {
-                _this.toprow = 0;
-                _this.currentScroll = 0;
-            });
+            this.db = new table.DataCollection();
+            this.refreshWave = new RefreshWave();
+            // setInterval(()=>{this.scrollOneUp()},1000);
+            /* this.$disp.on(this.ON_SCROLL_FULL,(evt)=>{
+                // this.scrollFullUp();
+             });
+             this.$disp.on(this.ON_SCROLL_0,(evt)=>{
+                 this.toprow = 0;
+                 this.currentScroll = 0;
+             });*/
         }
-        TableInfin.prototype.scrollOneUp = function () {
-            if (!this.$nanoContent)
-                this.$nanoContent = this.$nano.find('.nano-content');
-            if (this.$nanoContent.length === 0) {
-                console.log('error no nanocontent ');
-                return;
+        TableInfinController.prototype.onData = function (data) {
+            this.getparams = data.stamp;
+            console.log(this.getparams);
+            var ar = data.result.list;
+            for (var i = 0, n = ar.length; i < n; i++) {
+                var item = ar[i];
+                item.key = item.id;
+                item.icon = 'fa fa-' + item.fa;
+                item.aux_color = (item.color == 'green' ? '' : item.color);
             }
-            var len = this.$tbody.children().length;
-            var h = this.$tbody.children(this.toprow++).height();
-            this.currentScroll += h;
-            var max = this.$nanoContent[0].scrollHeight - this.$nanoContent.height();
-            console.log('this.currentScroll   ' + this.currentScroll + ' max  ' + max);
-            if (this.currentScroll > max)
-                this.$disp.triggerHandler(this.ON_SCROLL_FULL);
-            else
-                this.$nanoContent.animate({ 'scrollTop': this.currentScroll }, 500);
-            //  console.log(this.$nanoContent[0].scrollHeight-this.$nanoContent.height());
+            this.setData(ar);
         };
-        TableInfin.prototype.scrollFullUp = function () {
+        TableInfinController.prototype.scrollStart = function () {
             var _this = this;
-            //jQuery.fx.interval = 50;
-            if (!this.$nanoContent)
-                this.$nanoContent = this.$nano.find('.nano-content');
-            this.$nanoContent.animate({ 'scrollTop': 0 }, 1000, null, function () {
-                _this.$disp.triggerHandler(_this.ON_SCROLL_0);
-            });
+            if (this.timer !== 0)
+                return;
+            this.timer = setInterval(function () { return _this.scrollNext(); }, 2000);
         };
-        TableInfin.prototype.init = function () {
+        TableInfinController.prototype.scrollstop = function (reason) {
+            console.log('stop scroll ' + reason);
+            clearInterval(this.timer);
+            this.timer = 0;
+        };
+        TableInfinController.prototype.scrollNext = function () {
+            var _this = this;
+            var h = this.$tbody.children(0).height();
+            if (this.ontop === 0)
+                this.ontop = 1;
+            else
+                this.ontop = 0;
+            this.addRow();
+            this.$nanoContent.animate({ 'scrollTop': this.ontop ? h : h * 2 }, 500, function () {
+                // console.log('done');
+                if (_this.ontop === 0) {
+                    var item = _this.rows.shift();
+                    item.remove(null);
+                    var item = _this.rows.shift();
+                    item.remove(null);
+                    _this.$nanoContent.scrollTop(0);
+                }
+                _this.current = -1;
+                _this.fillTable();
+            });
+            //console.log(item);
+        };
+        TableInfinController.prototype.init = function () {
             this.$view = $(this.listid);
             this.$tbody = this.$view.find('[data-id=list]:first');
             this.$nano = this.$view.find('.nano:first');
             this.template = this.$view.find('[data-id=template]').html();
         };
-        TableInfin.prototype.loadData = function () {
+        TableInfinController.prototype.loadData = function () {
             var _this = this;
             this.getparams;
             var url = this.geturl + this.getparams;
@@ -77,103 +96,106 @@ var table;
                 console.log(reason);
             });
         };
-        TableInfin.prototype.setDataDone = function () {
-            // this.removeItems();
+        TableInfinController.prototype.setDataDone = function () {
+            if (this.timer === 0)
+                this.scrollStart();
+            // console.log('setdatadone');
         };
-        TableInfin.prototype.setData = function (data) {
-            var newInd = _.indexBy(data, 'key');
-            var oldInd = this.dataInd;
-            if (oldInd) {
-                //  console.log(this.data.length+' new '+data.length);
-                var oldAr = [];
-                _.map(this.data, function (val) { if (!newInd[val.key])
-                    oldAr.push(val); });
-                // console.log('old',oldAr);
-                var newAr = [];
-                _.map(data, function (val) { if (!oldInd[val.key])
-                    newAr.push(val); });
-            }
-            this.data = data;
-            this.dataInd = newInd;
+        TableInfinController.prototype.refreshExists = function () {
+            var ar = this.db.getExists();
+            this.refreshWave.refresh(ar);
+            /* ar.forEach(function(item){
+               // console.log(item);
+                 if(item.mounted) item.render();
+  
+             })*/
+        };
+        TableInfinController.prototype.initContenet = function () {
+            this.$nanoContent = this.$nano.find('.nano-content');
+            this.height = this.$nanoContent.height();
             this.rows = [];
             this.current = -1;
-            this.lastNumber = -1;
-            this.renderData();
+            this.fillTable();
+        };
+        TableInfinController.prototype.setData = function (data) {
+            this.db.parseData(data);
+            console.log('new data ' + this.db.newdata.length + ' ols data ' + this.db.olddata.length + ' data ' + this.db.length);
             if (!this.$nanoContent)
-                this.$nanoContent = this.$nano.find('.nano-content');
-            this.height = this.$nanoContent.height();
-            //console.log('this.height '+this.height);
+                this.initContenet();
+            this.refreshExists();
         };
-        TableInfin.prototype.removeOld = function (newData) {
-            var stamp = Date.now();
-            var old = _.sortBy(this.data, 'key');
-            _.map(newData, function (val) { if (old[val.key])
-                old[val.key].stamp = stamp; });
+        TableInfinController.prototype.setStamp = function (stamp) {
         };
-        TableInfin.prototype.setStamp = function (stamp) {
+        TableInfinController.prototype.addRow = function () {
+            var row = this.db.getNext();
+            if (row.mounted) {
+                console.log('mounted');
+            }
+            else {
+                row.template = this.template;
+                row.appendTo(this.$tbody);
+                this.rows.push(row);
+            }
         };
-        TableInfin.prototype.renderData = function () {
+        TableInfinController.prototype.fillTable = function () {
             var _this = this;
             this.current++;
-            this.lastNumber++;
-            if (this.current >= this.data.length) {
+            if (this.current >= this.db.length) {
                 this.setDataDone();
                 return;
             }
-            // console.log(this);
-            var ar = this.data;
-            var coll = this.collection;
-            // for (var i = 0, n = ar.length; i < n; i++) {
-            var item = ar[this.current];
-            item.stamp = this.current;
-            if (coll[item.key])
-                coll[item.key].setData(item);
-            else {
-                coll[item.key] = new TableRow(item, this.template);
-                coll[item.key].appendTo(this.$tbody);
-            }
-            this.rows.push(coll[item.key]);
+            this.addRow();
             if (this.$tbody.height() > this.height)
                 this.setDataDone();
             else
-                setTimeout(function () { _this.renderData(); }, 20);
-            //coll[item.key].insertAt(this.$tbody, this.current) ;
-            // }
+                setTimeout(function () { _this.fillTable(); }, 20);
         };
-        TableInfin.prototype.removeItemsDone = function () {
-            this.current = -1;
-            this.sortOrder();
-        };
-        TableInfin.prototype.sortOrderDone = function () {
-        };
-        TableInfin.prototype.sortOrder = function () {
-            var _this = this;
-            this.current++;
-            if (this.current >= this.rows.length) {
-                this.sortOrderDone();
-                return;
-            }
-            // this.views;
-            var ar = this.rows;
-            var item = ar[this.current];
-            if (item.order != this.current) {
-                item.insertAt(this.$tbody, this.current);
-                setTimeout(function () { return _this.sortOrder(); }, 2);
-            }
-        };
-        TableInfin.prototype.removeItems = function () {
-            var ar = this.data;
-            var coll = this.collection;
-            // console.log(coll);
-            for (var str in coll) {
-                if (coll[str] && coll[str].stamp !== this.stamp) {
-                    coll[str].remove();
-                }
-            }
-            this.removeItemsDone();
-        };
-        return TableInfin;
+        return TableInfinController;
     }());
-    table.TableInfin = TableInfin;
+    table.TableInfinController = TableInfinController;
+    var RefreshWave = (function () {
+        function RefreshWave() {
+        }
+        RefreshWave.prototype.refresh = function (data) {
+            var _this = this;
+            this.data = data;
+            this.counter = -1;
+            this.stop();
+            this.timer = setInterval(function () { _this.doNext(); }, 60);
+        };
+        RefreshWave.prototype.stop = function () {
+            clearInterval(this.timer);
+        };
+        RefreshWave.prototype.doNext = function () {
+            this.counter++;
+            if (this.counter >= this.data.length)
+                this.stop();
+            else {
+                var item = this.data[this.counter];
+                if (item.mounted)
+                    item.render();
+                else
+                    this.doNext();
+            }
+        };
+        return RefreshWave;
+    }());
+    table.RefreshWave = RefreshWave;
 })(table || (table = {}));
+$(document).ready(function () {
+    var options = {
+        geturl: 'http://callcenter.front-desk.ca/service/get-agents-all?date=',
+        getparams: '2016-03-15T7:58:34',
+        list: '[data-id=list]:first'
+    };
+    var list = new table.TableInfinController('#Table1', options);
+    list.init();
+    list.loadData();
+    setInterval(function () {
+        list.loadData();
+    }, 5000);
+    setInterval(function () {
+        //	list.scrollUp();
+    }, 6000);
+});
 //# sourceMappingURL=TableInfin.js.map
