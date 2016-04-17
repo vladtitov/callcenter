@@ -59,11 +59,11 @@ $final= array();
 foreach($indexed  as $agent){
 	unset($agent['ACTIVITY_OUTCOME_CODE']);
 	unset($agent['type']);
-	$agent['ready_eff'] = (int) $agent['COUNTER_ready_eff'];
-	$agent['calc'] = $agent['Dial']+$agent['Prescriber']+$agent['Non- prescriber'];
+	$agent['ready_eff'] = (int) $agent['COUNTER_ready_eff']/1000;
+	$agent['calc'] = ($agent['Dial']+$agent['Prescriber']+$agent['Non- prescriber'])/($agent['ready_eff']/12);
 	
 	//$eff = 
-	$agent['status'] = round(1200000*($agent['calc'])/$agent['ready_eff']);
+	$agent['status'] = round($agent['calc']*1000)/1000;
 	$ar = explode(' ',$agent['AGENT_FULL_NAME']);
 	
 	$agent['name']= $ar[0];
