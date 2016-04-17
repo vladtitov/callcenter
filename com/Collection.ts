@@ -3,8 +3,23 @@
  */
 
     ///<reference path="base.ts"/>
+    ///<reference path="TableRow.ts"/>
+    ///<reference path="ItemValue.ts"/>
+
 
 module table {
+    class  VOItem{
+        key:string
+        id:number;
+        stamp:number;
+        t:number;
+        icon:string;
+        sort:number;
+        msg:string;
+        /* constructor(obj:any){
+         for(var str in obj)this[str]=obj[str];
+         }*/
+    }
     import TableRow = table2.ListRow;
    export  class DataCollection {
         data:TableRow[];

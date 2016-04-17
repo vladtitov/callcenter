@@ -1,6 +1,7 @@
 /**
  * Created by VladHome on 4/5/2016.
  */
+///<reference path="base.ts"/>
 var table;
 (function (table) {
     var ItemValue = (function () {

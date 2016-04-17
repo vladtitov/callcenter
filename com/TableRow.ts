@@ -1,6 +1,8 @@
 /**
  * Created by VladHome on 4/5/2016.
  */
+///<reference path="ItemValue.ts"/>
+
 
 module table2{
     import ItemValue = table.ItemValue

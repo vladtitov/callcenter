@@ -2,8 +2,15 @@
  * Created by VladHome on 4/7/2016.
  */
 ///<reference path="base.ts"/>
+///<reference path="TableRow.ts"/>
+///<reference path="ItemValue.ts"/>
 var table;
 (function (table) {
+    var VOItem = (function () {
+        function VOItem() {
+        }
+        return VOItem;
+    }());
     var TableRow = table2.ListRow;
     var DataCollection = (function () {
         function DataCollection() {

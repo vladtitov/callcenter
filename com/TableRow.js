@@ -1,6 +1,7 @@
 /**
  * Created by VladHome on 4/5/2016.
  */
+///<reference path="ItemValue.ts"/>
 var table2;
 (function (table2) {
     var ItemValue = table.ItemValue;

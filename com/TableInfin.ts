@@ -3,6 +3,9 @@
  */
     ///<reference path="base.ts"/>
     ///<reference path="Collection.ts"/>
+///<reference path="TableRow.ts"/>
+    ///<reference path="ItemValue.ts"/>
+    
 
 
 module table {

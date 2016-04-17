@@ -1,7 +1,8 @@
 /**
  * Created by VladHome on 4/5/2016.
  */
-
+///<reference path="base.ts"/>
+    
 module table{
     export class ItemValue {
         $view:JQuery;
