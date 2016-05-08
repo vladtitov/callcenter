@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="libs/bootstrap.css">
+    <link rel="stylesheet" href="libs/nanoscroller.css">
+    <link rel="stylesheet" href="css/brand.css">
+    <link rel="stylesheet" href="css/timeline.css">
+
+    <link rel="stylesheet" href="libs/font-awesome.css">
+
+    <script src="libs/jquery-2.1.4.min.js"></script>
+    <script src="libs/underscore-min.js"></script>
+    <script  src="libs/backbone-min.js"></script>
+    <script  src="libs/require.js"></script>
+
+    <!--<script>-->
+        <!--'use strict';-->
+
+        <!--require.config({-->
+            <!--baseUrl: "",-->
+            <!--paths: {-->
+                <!--jquery                 : 'libs/jquery-2.1.4.min',-->
+                <!--underscore             : 'libs/underscore-min',-->
+                <!--moment             : 'libs/moment.min',-->
+                <!--ListItem:'apps/ListItem2',-->
+                <!--Reg:'com/Registry',-->
+                <!--base:'apps/base',-->
+                <!--nano:'libs/jquery.nanoscroller.min'-->
+            <!--},-->
+            <!--/*hbs: {-->
+             <!--handlebarsPath: "handlebars"-->
+             <!--},*/-->
+            <!--/*  shim : {-->
+             <!--mjs: {-->
+             <!--exports: 'moment'-->
+             <!--}-->
+             <!--}*/-->
+        <!--});-->
+
+       <!--$(document).ready(function(){-->
+           <!--console.log('ready');-->
+       <!--})-->
+
+    <!--</script>-->
+
+</head>
+<body>
+<style>
+    .wrapper{
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        background-color:#FDFAC3 ;
+        background-image: url("css/bgheader.png");
+        background-repeat: no-repeat;
+        background-size: 100% 255px;
+    }
+
+
+
+</style>
+<div class="wrapper">
+    <div id="header1">
+        <div id="DailyWeekly" class="pull-right">
+
+<h1>Daily</h1>
+        </div>
+        <style>
+            #DailyWeekly{
+                margin-right: 150px;
+                margin-top: 50px;
+                font-size: xx-large;
+                text-transform: uppercase;
+                color: white;
+                font-weight: bold;
+                text-shadow: 3px 2px 3px #0f0f0f;
+            }
+            #header1{
+                height: 125px;
+            }
+            #Panel1{
+                height: 250px ;
+                font-size: x-large;
+            }
+            #Panel1 th, #Panel2 h2{
+                font-size: xx-large;
+
+            }
+            #Panel1 table{
+                width: 100%;
+
+
+            }
+            #Panel2{
+                height: 390px ;
+            }
+
+        </style>
+
+    </div>
+<div class="row">
+    <div class="col-lg-4">
+        <div id="Panel1" class="panel brand">
+
+            <div class="panel-body">
+
+                    <h2> QUEUE STATUS as of</h2>
+
+                    <table class="">
+                        <tr>
+                            <td>
+                                Current Service Level:
+
+                            </td>
+                            <td>
+                                <span data-id="level">80</span>
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Current N0. of Calls in Queue:
+
+                            </td>
+                            <td>
+                                <span data-id="inqueue">2</span>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Average Handling Time:
+                            </td>
+                            <td>
+                                <span data-id="AHT">1:30</span>
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Total No. Calls answered in Queue:
+                            </td>
+                            <td>
+                                <span data-id="answered">300</span>
+                            </td>
+
+                        </tr>
+
+                    </table>
+            </div>
+
+            <!--<script>-->
+                <!--require(['moment'],function(moment){-->
+
+
+
+
+
+                <!--});-->
+            <!--</script>-->
+
+        </div>
+        <div id="Panel2" class="panel brand">
+            <div class="panel-body">
+                <h2>
+                    MESSAGE MARQUEE
+                </h2>
+                <p id="Message">
+
+                </p>
+
+            </div>
+            <!--<script>-->
+                <!--require(['moment'],function(moment){-->
+
+
+
+
+                <!--});-->
+            <!--</script>-->
+
+        </div>
+
+    </div>
+    <div class="col-lg-8">
+        <div id="rightheader">
+            <style>
+                #rightheader{
+                    height: 150px;
+                   /* background-color: rgba(0,0,0,0.3);*/
+                    padding: 35px;
+
+                    background-image: url("css/header2.png");
+                    background-size: 100% 150px;
+                }
+
+                #Clock{
+                   color: white;
+                }
+                #ClockTime{
+                    font-size: xx-large;
+                }
+
+                #ClockDate{
+                    font-size: x-large;
+                }
+            </style>
+            <div id="Clock">
+                        <div id="ClockTime">
+                                                12:34 PM
+                        </div>
+                        <div id="ClockDate">
+                            March 09, 2106
+
+                        </div>
+
+                <!--<script>-->
+                    <!--require(['moment'],function(moment){-->
+                        <!--setInterval(function(){-->
+                            <!--$('#ClockTime').text( moment().format('LT'));-->
+                        <!--},5000);-->
+
+                        <!--$('#ClockTime').text( moment().format('LT'));-->
+                        <!--$('#ClockDate').text( moment().format('LL'));-->
+                        <!--setInterval(function(){-->
+                            <!--$('#ClockDate').text( moment().format('LL'));-->
+                        <!--},100000);-->
+
+
+                    <!--})-->
+
+                <!--</script>-->
+            </div>
+
+        </div>
+
+        <div id="AgentsList1" class="brand">
+
+            <style>
+                #TableHeaders{
+                    font-size: xx-large;
+                    line-height: 60px;
+                    margin-bottom: 0;
+                    height:60px ;
+                    background-color:#005C95;
+                    color: white;
+                }
+                #TableHeaders>li{
+                    display: inline-block;
+                }
+                #AgentsList1 .nano{
+                    height: 445px;
+                }
+
+                #AgentsList1 table{
+
+                    color: white;
+                }
+                #AgentsList1 table{
+
+
+                }
+                #AgentsList1 table>tbody> tr{
+                    font-size: 30px;
+
+
+                }
+                #AgentsList1 table>tbody>tr:nth-child(odd) td {
+                    background: none repeat scroll 0 0 #418AB5;
+
+                }
+                #AgentsList1 table>tbody>tr:nth-child(even) td {
+                    background-color:#005C95;
+
+                }
+                #AgentsList1 td{
+                    min-width: 2em;
+                }
+
+               #AgentsList1 .col1{
+                    width:32%;
+                }
+
+                #AgentsList1 .col2{
+                    width:17% ;
+                }
+
+               #AgentsList1 .col3{
+                   width:11%;
+
+               }
+                #AgentsList1 .col4, #AgentsList1 .col5{
+                    width:16%;
+                    font-size: large;
+                }
+                #TableHeaders{
+                    white-space: nowrap;
+                }
+                #AgentsList1 .icon{
+                    width: 1.5em;
+                    height: 1.5em;
+                    background-size: 100%;
+                }
+
+            </style>
+            <ul id="TableHeaders">
+                <li class="col1">NAME</li>
+                <li class="col2">STATUS</li>
+                <li class="col3" >DIAL</li>
+                <li class="col4" >PRESCRIBER</li>
+                <li class="col5" >NON-PRES</li>
+            </ul>
+
+            <div class="nano">
+                <div class="scroll-window nano-content">
+
+
+
+                    <!--Template Row start -->
+                    <script id="row-template" type="text/template">
+                        <td><%=name%></td>
+                        <td>
+                            <div class="icon okno" >
+                                <!--<div class="<%=icon%>"></div>-->
+                                <div style="background-image: url('icons/<%=old_icon%>.png')"></div>
+                                <div class="in" style="background-image: url('icons/<%=icon%>.png')"></div>
+                            </div>
+                        </td>
+                        <td class="dial"><%=Dial%></td>
+                        <td><%=Prescriber%></td>
+                        <td><%=non_prescriber%></td>
+                    </script>
+                    <!--Template Row end -->
+
+                    <table class="scroll-content table table-responsive">
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <style>
+                .okno{
+                    position: relative;
+                    overflow: hidden;
+                    width: 1.2em;
+                    height: 1.2em;
+                }
+                .okno > div {
+                    transition: transform 0.5s; -webkit-transition: transform 0.5s;
+                    background-size: 100%;
+                    position: absolute;
+                    width: 1.2em;
+                    height: 1.2em;
+                    left: 0;
+                    top: 0;
+                }
+                .okno .in{
+                    transform:translateY(100%); -webkit-transform:translateY(100%);
+                }
+                .okno .out{
+                    transform:translateY(-100%); -webkit-transform:translateY(-100%);
+                }
+            </style>
+
+            <script  src="js/com/RowModel.js"></script>
+            <script  src="js/com/OneIcon.js"></script>
+            <script  src="js/com/BackboneTable.js"></script>
+            <script  src="js/apps/Table1.js"></script>
+        </div>
+
+    </div>
+
+</div>
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div id="AgentsList2" data-str="apps/List2">
+                <style>
+                    #AgentsList2 ul{
+                        white-space: nowrap;
+                    }
+                    #AgentsList2 ul>li{
+                        width: 120px;
+                      /*  height: 170px;*/
+                        display: inline-block;
+                        margin: 0px;
+                        white-space: normal;
+                        border: solid 1px white;
+                        vertical-align: top;
+
+                    }
+                    #AgentsList2 ul{
+                        width: 100%;
+                        overflow: auto;
+                        vertical-align: top;
+                    }
+                    #AgentsList2 .icon{
+                        width: 80px;
+                        height: 80px;
+                        background-size: contain;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        display: inline-block;
+                        margin: 10px 0 10px 0;
+                    }
+                    #AgentsList2 .id{
+                        border-bottom: solid 3px white;
+                        padding: 10px 0 10px 0;
+                    }
+                    #AgentsList2 .time{
+                       /* padding: 5px;*/
+                        min-height: 2em;
+                    }
+                </style>
+                <div >
+                    <div>
+                        <ul class="brand" data-id="list" onclick="">
+                            <script type="text/html" data-id="template">
+                                <li class="text-center brand">
+                                    <div data-text="id" class="id"> </div>
+                                    <div ><div class="icon" data-img="icon"></div></div>
+                                    <div data-text="time" class="time"></div>
+                                </li>
+
+                            </script>
+                        </ul>
+
+                    </div>
+
+                </div>
+                <!--<script>-->
+                    <!--require([-->
+                        <!--'jquery',-->
+                        <!--'underscore',-->
+                        <!--'moment',-->
+                        <!--'Reg',-->
+                        <!--'nano',-->
+                        <!--'apps/List2'-->
+                    <!--],function(v,v2,moment){-->
+
+                        <!--var stamp;-->
+                        <!--var options ={-->
+                            <!--geturl:'http://front-desk.ca/mi/callcenter/rem/getagents?date=',-->
+                            <!--getparams:'2016-03-15T7:58:34'-->
+
+                        <!--}-->
+                        <!--var list = new listU.List2('#AgentsList2',options);-->
+                        <!--list.init();-->
+                        <!--list.loadData();-->
+                        <!--var formatTime = function(num){-->
+                            <!--var min = Math.floor(num/60);-->
+                            <!--var sec = num-(min*60);-->
+                            <!--return min+' min '+sec;-->
+                        <!--}-->
+
+                        <!--list.onData = function(data){-->
+                           <!--//  console.log(data);-->
+                          <!--stamp = data.stamp;-->
+
+                           <!--var ar = data.result.list;-->
+                           <!--for(var i=0,n=ar.length;i<n;i++){-->
+                               <!--var item = ar[i];-->
+                               <!--item.icon='icons/'+item.icon+'.png';-->
+                               <!--item.time = item.t?formatTime(item.t):' ';-->
+                                <!--item.key=item.id;-->
+                            <!--}-->
+                           <!--//// data=ar;-->
+                            <!--//console.log(ar);-->
+                          <!--list.setData.call(list,ar);-->
+                        <!--}-->
+
+
+                        <!--setInterval(function(){-->
+                            <!--list.getparams = stamp-->
+                            <!--// console.log(list.getparams);-->
+                          <!--//  if(list.getparams == 'report=d') list.getparams='report=w';-->
+                          <!--//  else list.getparams = 'report=d';-->
+                            <!--list.loadData();-->
+                        <!--},5000);-->
+                    <!--})-->
+                <!--</script>-->
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+</div>
+<div id="footer">
+    <style>
+        #footer{
+            width: 100%;
+            height: 40px;
+            margin:0;
+            border-top: solid 2px white;
+            background-color: #005D96;
+        }
+
+    </style>
+
+
+</div>
+
+</body>
+</html>
