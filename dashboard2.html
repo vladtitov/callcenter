@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="libs/font-awesome.css">
 
     <script src="libs/jquery-2.1.4.min.js"></script>
-    <script src="libs/underscore-min.js"></script>
-    <script src="libs/moment.min.js"></script>
-    <script src="libs/backbone-min.js"></script>
-    <script  src="libs/jquery.nanoscroller.min.js"></script>
     <script  src="libs/require.js"></script>
 
     <script>
@@ -48,29 +44,8 @@
            console.log('ready');
        })
 
-
-
-
-
-
-
-
-
-
-            /////////////////////////
-
-
-
-
-
-        }
-
-
-
-
-
-
     </script>
+
 </head>
 <body>
 <style>
@@ -247,7 +222,7 @@
                         </div>
 
                 <script>
-
+                    require(['moment'],function(moment){
                         setInterval(function(){
                             $('#ClockTime').text( moment().format('LT'));
                         },5000);
@@ -259,7 +234,7 @@
                         },100000);
 
 
-
+                    })
 
                 </script>
             </div>
@@ -363,9 +338,15 @@
                 </div>
 
             </div>
-            <script  src="apps/List2.js"></script>
             <script>
-
+                require([
+                    'jquery',
+                    'underscore',
+                    'moment',
+                    'Reg',
+                    'nano',
+                    'apps/List2'
+                ],function(){
 
                     var options ={
                         geturl:'http://callcenter.front-desk.ca//dashboard2/bsd.php?',
@@ -398,7 +379,7 @@
                         }
                         list.loadData();
                     },5000);
-
+                })
             </script>
 
         </div>
