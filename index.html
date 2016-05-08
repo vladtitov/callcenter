@@ -356,7 +356,7 @@
                     height: 1.2em;
                 }
                 .okno > div {
-                    transition: transform 0.5s;
+                    transition: transform 0.5s; -webkit-transition: transform 0.5s;
                     background-size: 100%;
                     position: absolute;
                     width: 1.2em;
@@ -365,10 +365,10 @@
                     top: 0;
                 }
                 .okno .in{
-                    transform:translateY(100%);
+                    transform:translateY(100%); -webkit-transform:translateY(100%);
                 }
                 .okno .out{
-                    transform:translateY(-100%);
+                    transform:translateY(-100%); -webkit-transform:translateY(-100%);
                 }
             </style>
 
