@@ -375,7 +375,6 @@
             <script  src="js/com/RowModel.js"></script>
             <script  src="js/com/OneIcon.js"></script>
             <script  src="js/com/BackboneTable.js"></script>
-            <script  src="js/apps/Table1.js"></script>
         </div>
 
     </div>
@@ -392,7 +391,6 @@
                     }
                     #AgentsList2 ul>li{
                         width: 120px;
-                      /*  height: 170px;*/
                         display: inline-block;
                         margin: 0px;
                         white-space: normal;
@@ -405,12 +403,9 @@
                         overflow: auto;
                         vertical-align: top;
                     }
-                    #AgentsList2 .icon{
+                    #AgentsList2 .icon2{
                         width: 80px;
                         height: 80px;
-                        background-size: contain;
-                        background-position: center;
-                        background-repeat: no-repeat;
                         display: inline-block;
                         margin: 10px 0 10px 0;
                     }
@@ -419,78 +414,54 @@
                         padding: 10px 0 10px 0;
                     }
                     #AgentsList2 .time{
-                       /* padding: 5px;*/
                         min-height: 2em;
                     }
                 </style>
                 <div >
                     <div>
-                        <ul class="brand" data-id="list" onclick="">
-                            <script type="text/html" data-id="template">
-                                <li class="text-center brand">
-                                    <div data-text="id" class="id"> </div>
-                                    <div ><div class="icon" data-img="icon"></div></div>
-                                    <div data-text="time" class="time"></div>
-                                </li>
+                        <script id="row-template2" type="text/template">
+                            <div data-text="id" class="id"><%=id%></div>
+                            <div class="icon2 okno2" >
+                                <div style="background-image: url('icons/<%=icon%>.png')"></div>
+                               <div class="in" style="background-image: url('icons/<%=icon%>.png')"></div>
+                            </div>
+                            <div data-text="time" class="time"><%=time%></div>
+                        </script>
 
-                            </script>
-                        </ul>
+                        <ul class="text-center brand" data-id="list" onclick=""></ul>
 
                     </div>
 
                 </div>
-                <!--<script>-->
-                    <!--require([-->
-                        <!--'jquery',-->
-                        <!--'underscore',-->
-                        <!--'moment',-->
-                        <!--'Reg',-->
-                        <!--'nano',-->
-                        <!--'apps/List2'-->
-                    <!--],function(v,v2,moment){-->
 
-                        <!--var stamp;-->
-                        <!--var options ={-->
-                            <!--geturl:'http://front-desk.ca/mi/callcenter/rem/getagents?date=',-->
-                            <!--getparams:'2016-03-15T7:58:34'-->
-
-                        <!--}-->
-                        <!--var list = new listU.List2('#AgentsList2',options);-->
-                        <!--list.init();-->
-                        <!--list.loadData();-->
-                        <!--var formatTime = function(num){-->
-                            <!--var min = Math.floor(num/60);-->
-                            <!--var sec = num-(min*60);-->
-                            <!--return min+' min '+sec;-->
-                        <!--}-->
-
-                        <!--list.onData = function(data){-->
-                           <!--//  console.log(data);-->
-                          <!--stamp = data.stamp;-->
-
-                           <!--var ar = data.result.list;-->
-                           <!--for(var i=0,n=ar.length;i<n;i++){-->
-                               <!--var item = ar[i];-->
-                               <!--item.icon='icons/'+item.icon+'.png';-->
-                               <!--item.time = item.t?formatTime(item.t):' ';-->
-                                <!--item.key=item.id;-->
-                            <!--}-->
-                           <!--//// data=ar;-->
-                            <!--//console.log(ar);-->
-                          <!--list.setData.call(list,ar);-->
-                        <!--}-->
+                <style>
+                    .okno2{
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .okno2 > div {
+                        transition: transform 0.5s; -webkit-transition: transform 0.5s;
+                        background-size: contain;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        position: absolute;
+                        width: 80px;
+                        height: 80px;
+                    }
+                    .okno2 .in{
+                        transform:translateY(100%); -webkit-transform:translateY(100%);
+                    }
+                    .okno2 .out{
+                        transform:translateY(-100%); -webkit-transform:translateY(-100%);
+                    }
+                </style>
 
 
-                        <!--setInterval(function(){-->
-                            <!--list.getparams = stamp-->
-                            <!--// console.log(list.getparams);-->
-                          <!--//  if(list.getparams == 'report=d') list.getparams='report=w';-->
-                          <!--//  else list.getparams = 'report=d';-->
-                            <!--list.loadData();-->
-                        <!--},5000);-->
-                    <!--})-->
-                <!--</script>-->
-
+                <script  src="js/com/RowModelTwo.js"></script>
+                <script  src="js/com/RowViewTwo.js"></script>
+                <script  src="js/com/BackboneTableTwo.js"></script>
+                <script src="js/com/Formatter.js"></script>
+                <script  src="js/apps/Table1.js"></script>
             </div>
         </div>
 
