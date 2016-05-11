@@ -68,14 +68,14 @@ var utils;
             // console.log('starting',this);
             if (this.isRunning)
                 return;
-            $("#AgentsList2 ul").css('overflow-x', 'hidden');
+            $(".scroll-window").css('overflow-x', 'hidden');
             this.timerId = setInterval(function () { _this.nextStep(); }, this.delay);
         };
         AutoScroller.prototype.stop = function (evt) {
             //console.log('stopping',this);
             clearInterval(this.timerId);
             this.isRunning = false;
-            $("#AgentsList2 ul").css('overflow-x', 'auto');
+            $(".scroll-window").css('overflow-x', 'auto');
             // $(".nano").nanoScroller();
         };
         return AutoScroller;

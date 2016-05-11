@@ -401,7 +401,7 @@
                     #AgentsList2 ul{
                         width: 100%;
                         /*overflow: auto;*/
-                        overflow-x: hidden;
+                        /*overflow-x: hidden;*/
                         vertical-align: top;
                     }
                     #AgentsList2 .icon2{
@@ -419,7 +419,7 @@
                     }
                 </style>
                 <div>
-                    <div class="scroll-window">
+                    <div class="scroll-window brand">
                         <script id="row-template2" type="text/template">
                             <div data-text="id" class="id"><%=id%></div>
                             <div class="icon2 okno2" >
@@ -429,14 +429,16 @@
                             <div data-text="time" class="time"><%=time%></div>
                         </script>
 
-
-                        <ul class="text-center brand scroll-content" data-id="list" onclick=""></ul>
+                        <ul class="text-center brand scroll-content" style="padding-left: 4px; box-shadow: 0px 0px 0px 0px;" data-id="list" onclick=""></ul>
 
                     </div>
 
                 </div>
 
                 <style>
+                    .scroll-window {
+                        overflow-x: hidden;
+                    }
                     .okno2{
                         position: relative;
                         overflow: hidden;

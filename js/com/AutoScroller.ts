@@ -83,7 +83,7 @@ module utils{
         start(evt:JQueryEventObject):void{
            // console.log('starting',this);
             if(this.isRunning) return;
-            $("#AgentsList2 ul").css('overflow-x', 'hidden');
+            $(".scroll-window").css('overflow-x', 'hidden');
             this.timerId = setInterval(()=>{this.nextStep()},this.delay);
         }
         stop(evt:JQueryEventObject):void{
@@ -92,7 +92,7 @@ module utils{
             clearInterval(this.timerId);
 
             this.isRunning=false;
-            $("#AgentsList2 ul").css('overflow-x', 'auto');
+            $(".scroll-window").css('overflow-x', 'auto');
             // $(".nano").nanoScroller();
         }
     }
