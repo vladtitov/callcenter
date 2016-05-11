@@ -400,7 +400,8 @@
                     }
                     #AgentsList2 ul{
                         width: 100%;
-                        overflow: auto;
+                        /*overflow: auto;*/
+                        overflow-x: hidden;
                         vertical-align: top;
                     }
                     #AgentsList2 .icon2{
@@ -417,8 +418,8 @@
                         min-height: 2em;
                     }
                 </style>
-                <div >
-                    <div>
+                <div>
+                    <div class="scroll-window">
                         <script id="row-template2" type="text/template">
                             <div data-text="id" class="id"><%=id%></div>
                             <div class="icon2 okno2" >
@@ -428,7 +429,8 @@
                             <div data-text="time" class="time"><%=time%></div>
                         </script>
 
-                        <ul class="text-center brand" data-id="list" onclick=""></ul>
+
+                        <ul class="text-center brand scroll-content" data-id="list" onclick=""></ul>
 
                     </div>
 
@@ -458,6 +460,7 @@
 
 
                 <script  src="js/com/RowModelTwo.js"></script>
+                <script  src="js/com/AutoScroller.js"></script>
                 <script  src="js/com/RowViewTwo.js"></script>
                 <script  src="js/com/BackboneTableTwo.js"></script>
                 <script src="js/com/Formatter.js"></script>

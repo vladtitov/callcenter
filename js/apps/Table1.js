@@ -25,5 +25,13 @@ $(document).ready(function () {
         rowTempalete: '#row-template2',
         collection: collectionTwo
     });
+    var scroller = new utils.AutoScroller({
+        //scrollWindow:'#Table1 .scroll-window',
+        scrollWindow: '#AgentsList2 .scroll-window',
+        scrollContent: '#AgentsList2 .scroll-content',
+        list: '#AgentsList2 .scroll-window ul',
+        delay: 3,
+        speed: 0.7
+    });
 });
 //# sourceMappingURL=Table1.js.map
