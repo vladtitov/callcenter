@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="libs/nanoscroller.css">
     <link rel="stylesheet" href="css/brand.css">
     <link rel="stylesheet" href="css/timeline.css">
+    <link rel="stylesheet" href="css/mymobile.css">
 
     <link rel="stylesheet" href="libs/font-awesome.css">
 
@@ -17,37 +18,6 @@
     <script src="libs/underscore-min.js"></script>
     <script  src="libs/backbone-min.js"></script>
     <script  src="libs/require.js"></script>
-
-    <!--<script>-->
-        <!--'use strict';-->
-
-        <!--require.config({-->
-            <!--baseUrl: "",-->
-            <!--paths: {-->
-                <!--jquery                 : 'libs/jquery-2.1.4.min',-->
-                <!--underscore             : 'libs/underscore-min',-->
-                <!--moment             : 'libs/moment.min',-->
-                <!--ListItem:'apps/ListItem2',-->
-                <!--Reg:'com/Registry',-->
-                <!--base:'apps/base',-->
-                <!--nano:'libs/jquery.nanoscroller.min'-->
-            <!--},-->
-            <!--/*hbs: {-->
-             <!--handlebarsPath: "handlebars"-->
-             <!--},*/-->
-            <!--/*  shim : {-->
-             <!--mjs: {-->
-             <!--exports: 'moment'-->
-             <!--}-->
-             <!--}*/-->
-        <!--});-->
-
-       <!--$(document).ready(function(){-->
-           <!--console.log('ready');-->
-       <!--})-->
-
-    <!--</script>-->
-
 </head>
 <body>
 <style>
@@ -62,12 +32,9 @@
         background-repeat: no-repeat;
         background-size: 100% 255px;
     }
-
-
-
 </style>
 <div class="wrapper">
-    <div id="header1">
+    <div id="header1" class="row">
         <div id="DailyWeekly" class="pull-right">
 
 <h1>Daily</h1>
@@ -196,7 +163,6 @@
             <style>
                 #rightheader{
                     height: 150px;
-                   /* background-color: rgba(0,0,0,0.3);*/
                     padding: 35px;
 
                     background-image: url("css/header2.png");
@@ -222,23 +188,6 @@
                             March 09, 2106
 
                         </div>
-
-                <!--<script>-->
-                    <!--require(['moment'],function(moment){-->
-                        <!--setInterval(function(){-->
-                            <!--$('#ClockTime').text( moment().format('LT'));-->
-                        <!--},5000);-->
-
-                        <!--$('#ClockTime').text( moment().format('LT'));-->
-                        <!--$('#ClockDate').text( moment().format('LL'));-->
-                        <!--setInterval(function(){-->
-                            <!--$('#ClockDate').text( moment().format('LL'));-->
-                        <!--},100000);-->
-
-
-                    <!--})-->
-
-                <!--</script>-->
             </div>
 
         </div>
@@ -282,25 +231,27 @@
                     background-color:#005C95;
 
                 }
-                #AgentsList1 td{
-                    min-width: 2em;
-                }
+
 
                #AgentsList1 .col1{
                     width:32%;
                 }
 
                 #AgentsList1 .col2{
-                    width:17% ;
+                    width:18% ;
                 }
 
                #AgentsList1 .col3{
-                   width:11%;
+                   width:12%;
 
                }
                 #AgentsList1 .col4, #AgentsList1 .col5{
-                    width:16%;
+                    width:19%;
                     font-size: large;
+                }
+                #AgentsList1 .col6, #AgentsList1 .col7{
+                    width:19%;
+                    font-size: 30px;
                 }
                 #TableHeaders{
                     white-space: nowrap;
@@ -309,44 +260,52 @@
                     width: 1.5em;
                     height: 1.5em;
                     background-size: 100%;
+                    display:block;
+                    margin:0 auto;
+                }
+                #AgentsList1 .center{
+                    text-align: center;
                 }
 
             </style>
-            <ul id="TableHeaders">
-                <li class="col1">NAME</li>
-                <li class="col2">STATUS</li>
-                <li class="col3" >DIAL</li>
-                <li class="col4" >PRESCRIBER</li>
-                <li class="col5" >NON-PRES</li>
-            </ul>
 
-            <div class="nano">
-                <div class="scroll-window nano-content">
+                <ul id="TableHeaders">
+                    <li class="col1">NAME</li>
+                    <li class="col2">STATUS</li>
+                    <li class="col3" >DIAL</li>
+                    <li class="col4" >PRESCRIBER</li>
+                    <li class="col5" >NON-PRES</li>
+                </ul>
+
+                <div class="nano">
+                    <div class="scroll-window nano-content">
 
 
 
-                    <!--Template Row start -->
-                    <script id="row-template" type="text/template">
-                        <td><%=name%></td>
-                        <td>
-                            <div class="icon okno" >
-                                <!--<div class="<%=icon%>"></div>-->
-                                <div style="background-image: url('icons/<%=old_icon%>.png')"></div>
-                                <div class="in" style="background-image: url('icons/<%=icon%>.png')"></div>
-                            </div>
-                        </td>
-                        <td class="dial"><%=Dial%></td>
-                        <td><%=Prescriber%></td>
-                        <td><%=non_prescriber%></td>
-                    </script>
-                    <!--Template Row end -->
+                        <!--Template Row start -->
+                        <script id="row-template" type="text/template">
+                            <td class="col1"><%=name%></td>
+                            <td class="col2">
+                                <div class="icon okno">
+                                    <!--<div class="<%=icon%>"></div>-->
+                                    <div style="background-image: url('icons/<%=old_icon%>.png');"></div>
+                                    <div class="in" style="background-image: url('icons/<%=icon%>.png');"></div>
+                                </div>
+                            </td>
+                            <td class="dial col3 center"><%=Dial%></td>
+                            <td class="col6 center"><%=Prescriber%></td>
+                            <td class="col7 center"><%=non_prescriber%></td>
+                        </script>
+                        <!--Template Row end -->
 
-                    <table class="scroll-content table table-responsive">
-                        <tbody></tbody>
-                    </table>
+                        <table class="scroll-content table table-responsive">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
                 </div>
 
-            </div>
+
 
             <style>
                 .okno{
@@ -375,7 +334,6 @@
             <script  src="js/com/RowModel.js"></script>
             <script  src="js/com/OneIcon.js"></script>
             <script  src="js/com/BackboneTable.js"></script>
-            <script  src="js/apps/Table1.js"></script>
         </div>
 
     </div>
@@ -392,7 +350,6 @@
                     }
                     #AgentsList2 ul>li{
                         width: 120px;
-                      /*  height: 170px;*/
                         display: inline-block;
                         margin: 0px;
                         white-space: normal;
@@ -402,15 +359,11 @@
                     }
                     #AgentsList2 ul{
                         width: 100%;
-                        overflow: auto;
                         vertical-align: top;
                     }
-                    #AgentsList2 .icon{
+                    #AgentsList2 .icon2{
                         width: 80px;
                         height: 80px;
-                        background-size: contain;
-                        background-position: center;
-                        background-repeat: no-repeat;
                         display: inline-block;
                         margin: 10px 0 10px 0;
                     }
@@ -419,78 +372,58 @@
                         padding: 10px 0 10px 0;
                     }
                     #AgentsList2 .time{
-                       /* padding: 5px;*/
                         min-height: 2em;
                     }
                 </style>
-                <div >
-                    <div>
-                        <ul class="brand" data-id="list" onclick="">
-                            <script type="text/html" data-id="template">
-                                <li class="text-center brand">
-                                    <div data-text="id" class="id"> </div>
-                                    <div ><div class="icon" data-img="icon"></div></div>
-                                    <div data-text="time" class="time"></div>
-                                </li>
+                <div>
+                    <div class="scroll-window brand">
+                        <script id="row-template2" type="text/template">
+                            <div data-text="id" class="id"><%=id%></div>
+                            <div class="icon2 okno2" >
+                                <div style="background-image: url('icons/<%=icon%>.png')"></div>
+                               <div class="in" style="background-image: url('icons/<%=icon%>.png')"></div>
+                            </div>
+                            <div data-text="time" class="time"><%=time%></div>
+                        </script>
 
-                            </script>
-                        </ul>
+                        <ul class="text-center brand scroll-content" style="padding-left: 4px; box-shadow: 0px 0px 0px 0px;" data-id="list" onclick=""></ul>
 
                     </div>
 
                 </div>
-                <!--<script>-->
-                    <!--require([-->
-                        <!--'jquery',-->
-                        <!--'underscore',-->
-                        <!--'moment',-->
-                        <!--'Reg',-->
-                        <!--'nano',-->
-                        <!--'apps/List2'-->
-                    <!--],function(v,v2,moment){-->
 
-                        <!--var stamp;-->
-                        <!--var options ={-->
-                            <!--geturl:'http://front-desk.ca/mi/callcenter/rem/getagents?date=',-->
-                            <!--getparams:'2016-03-15T7:58:34'-->
-
-                        <!--}-->
-                        <!--var list = new listU.List2('#AgentsList2',options);-->
-                        <!--list.init();-->
-                        <!--list.loadData();-->
-                        <!--var formatTime = function(num){-->
-                            <!--var min = Math.floor(num/60);-->
-                            <!--var sec = num-(min*60);-->
-                            <!--return min+' min '+sec;-->
-                        <!--}-->
-
-                        <!--list.onData = function(data){-->
-                           <!--//  console.log(data);-->
-                          <!--stamp = data.stamp;-->
-
-                           <!--var ar = data.result.list;-->
-                           <!--for(var i=0,n=ar.length;i<n;i++){-->
-                               <!--var item = ar[i];-->
-                               <!--item.icon='icons/'+item.icon+'.png';-->
-                               <!--item.time = item.t?formatTime(item.t):' ';-->
-                                <!--item.key=item.id;-->
-                            <!--}-->
-                           <!--//// data=ar;-->
-                            <!--//console.log(ar);-->
-                          <!--list.setData.call(list,ar);-->
-                        <!--}-->
+                <style>
+                    .scroll-window {
+                        overflow-x: hidden;
+                    }
+                    .okno2{
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .okno2 > div {
+                        transition: transform 0.5s; -webkit-transition: transform 0.5s;
+                        background-size: contain;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        position: absolute;
+                        width: 80px;
+                        height: 80px;
+                    }
+                    .okno2 .in{
+                        transform:translateY(100%); -webkit-transform:translateY(100%);
+                    }
+                    .okno2 .out{
+                        transform:translateY(-100%); -webkit-transform:translateY(-100%);
+                    }
+                </style>
 
 
-                        <!--setInterval(function(){-->
-                            <!--list.getparams = stamp-->
-                            <!--// console.log(list.getparams);-->
-                          <!--//  if(list.getparams == 'report=d') list.getparams='report=w';-->
-                          <!--//  else list.getparams = 'report=d';-->
-                            <!--list.loadData();-->
-                        <!--},5000);-->
-                    <!--})-->
-                <!--</script>-->
-
+                <script  src="js/com/RowModelTwo.js"></script>
+                <script  src="js/com/AutoScroller.js"></script>
+                <script  src="js/com/RowViewTwo.js"></script>
+                <script  src="js/com/BackboneTableTwo.js"></script>
+                <script src="js/com/Formatter.js"></script>
+                <script  src="js/apps/Table1.js"></script>
             </div>
         </div>
 
